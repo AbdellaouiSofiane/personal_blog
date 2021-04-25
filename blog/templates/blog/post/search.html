@@ -1,0 +1,51 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load blog_tags %}
+{% block title %}Search{% endblock %}
+
+
+{% block content %}
+	{% if query %}
+		<h1 class="display-5 mt-5">Posts containing "{{ query }}"</h1>
+		{% with results.count as total_results %}
+			<small class="text-muted">Found {{ total_results }} result{{ total_results|pluralize }}</small>
+		{% endwith %}
+		<hr class="mb-5">
+		{% for post in results %}
+		<div class="card text-white bg-dark mb-3">
+ 			<div class="row g-0">
+    			<div class="col-md-4">
+      				<img src="{% static 'img/post-image.png' %}" class="card-img-top" alt="">
+    			</div>
+    			<div class="col-md-8">
+      				<div class="card-body">
+        				<h5 class="card-title">
+        					<a class="text-decoration-none text-success" href="{{ post.get_absolute_url }}">
+        						{{ post.title }}
+        					</a>
+        				</h5>
+        				<h6 class="card-subtitle mb-2 text-muted fst-italic">
+        					<small>
+        						Published on {{ post.publish }} by {{ post.author }}
+        					</small>
+        				</h6>
+        				{% for tag in post.tags.all %}
+    						<span class="badge bg-success">
+    							<a href="{% url 'blog:post_list_by_tag' tag.slug %}" class='text-light text-decoration-none'>
+    								{{tag.name}}
+    							</a>
+    						</span>
+    					{% endfor %}
+        					<p class="card-text">
+        						{{ post.body|markdown|truncatewords_html:30 }}
+        					</p>
+      				</div>
+    			</div>
+ 			 </div>
+		</div>
+		{% endfor %}
+	{% endif %}
+
+
+
+{% endblock %}
