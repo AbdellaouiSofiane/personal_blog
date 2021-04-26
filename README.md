@@ -1,4 +1,4 @@
-"# personal blog web site" 
+# personal blog web site
 > This is a personal blog web site developped using Python Django.
 
 ## Requirements
